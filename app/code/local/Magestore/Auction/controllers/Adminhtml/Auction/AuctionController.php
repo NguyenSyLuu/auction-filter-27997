@@ -178,9 +178,10 @@ class Magestore_Auction_Adminhtml_Auction_AuctionController extends Mage_Adminht
         $response->setHeader('Content-type', $contentType);
         $response->setBody($content);
         $response->sendResponse();
-        die;
     }
-    protected function _isAllowed() {
+
+    protected function _isAllowed()
+    {
         return Mage::getSingleton('admin/session')->isAllowed('auction');
     }
 }

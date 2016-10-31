@@ -566,7 +566,6 @@ class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_
         $response->setHeader('Content-type', $contentType);
         $response->setBody($content);
         $response->sendResponse();
-        die;
     }
 
     public function checkMassStatus($productauction, $status = null) {
