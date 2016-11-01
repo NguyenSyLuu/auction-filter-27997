@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Form constructor.
+     */
     public function __construct() {
         $this->setTemplate('auction/auction.phtml');
     }
@@ -40,6 +43,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Form extends Mage_Admin
         return;
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuctionbid() {
         if (!$this->hasData('auction_data')) {
             $this->setData('auction_data', Mage::registry('auction_data'));
@@ -59,14 +65,25 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Form extends Mage_Admin
         return;
     }
 
+    /**
+     * @param $product_id
+     * @return mixed
+     */
     public function getProductUrl($product_id) {
         return $this->getUrl('adminhtml/catalog_product/edit', array('id' => $product_id));
     }
 
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getCustomerUrl($customer_id) {
         return $this->getUrl('adminhtml/customer/edit', array('id' => $customer_id));
     }
 
+    /**
+     * @return mixed
+     */
     public function getProductauction() {
         $productauctionId = $this->getAuctionbid()->getProductauctionId();
 
@@ -75,6 +92,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Form extends Mage_Admin
         }
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareForm() {
         $form = new Varien_Data_Form();
         $this->setForm($form);

@@ -34,6 +34,9 @@ class Magestore_Auction_Model_Autobid extends Mage_Core_Model_Abstract {
         $this->_init('auction/autobid');
     }
 
+    /**
+     * @return mixed
+     */
     public function getTimeLeft() {
         if (!$this->getData('timeleft')) {
             $auction = Mage::getModel('auction/productauction')->load($this->getProductauctionId());
@@ -42,6 +45,9 @@ class Magestore_Auction_Model_Autobid extends Mage_Core_Model_Abstract {
         return $this->getData('timeleft');
     }
 
+    /**
+     * @return mixed
+     */
     public function getProductName() {
         if (!$this->getData('timeleft')) {
             $auction = Mage::getModel('auction/productauction')->load($this->getProductauctionId());
@@ -50,21 +56,34 @@ class Magestore_Auction_Model_Autobid extends Mage_Core_Model_Abstract {
         return $this->getData('product_name');
     }
 
+    /**
+     * @return mixed
+     */
     public function getFormatedTime() {
         $bid_date = new Zend_Date($this->getCreatedDate() . ' ' . $this->getCreatedTime(), null, 'en_GB');
         return Mage::helper('core')->formatDate($bid_date, 'medium', true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getFormatedPrice() {
         return Mage::helper('core')->currency($this->getPrice());
     }
 
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getListByCustomerId($customer_id) {
         $collection = $this->getCollection()
                 ->addFieldToFilter('customer_id', $customer_id);
         return $collection;
     }
 
+    /**
+     * @return $this
+     */
     public function emailToBidder() {
         $cusId = $this->getCustomerId();
         $customer = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('customer_id', $cusId)->getFirstItem();

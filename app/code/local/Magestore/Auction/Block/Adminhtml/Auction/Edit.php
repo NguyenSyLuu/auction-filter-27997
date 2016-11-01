@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+    /**
+     * Magestore_Auction_Block_Adminhtml_Auction_Edit constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -62,6 +65,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit extends Mage_Adminhtml_Bloc
         ";
     }
 
+    /**
+     * @return mixed
+     */
     public function getHeaderText()
     {
          return Mage::helper('auction')->__('Bid Information');

@@ -25,10 +25,16 @@
 
 class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Customerform extends Mage_Adminhtml_Block_Widget_Form {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Customerform constructor.
+     */
     public function __construct() {
         $this->setTemplate('auction/viewcustomer.phtml');
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuctionbid() {
         if (!$this->hasData('auction_data')) {
             $this->setData('auction_data', Mage::registry('auction_data'));
@@ -49,6 +55,10 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Customerform extends Ma
         return;
     }
 
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getCustomerUrl($customer_id) {
         return $this->getUrl('adminhtml/customer/edit', array('id' => $customer_id));
     }

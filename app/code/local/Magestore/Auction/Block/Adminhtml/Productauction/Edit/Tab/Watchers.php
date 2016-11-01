@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Watchers extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Watchers constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('watchersGrid');
@@ -34,6 +37,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Watchers extends
         $this->setSaveParametersInSession(true);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $collection = Mage::getResourceModel('customer/customer_collection')
                 ->addNameToSelect()
@@ -58,6 +64,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Watchers extends
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $this->addColumn('entity_id', array(
             'header' => Mage::helper('customer')->__('ID'),
@@ -136,10 +145,17 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Watchers extends
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return mixed
+     */
     public function getGridUrl() {
         return $this->getData('grid_url') ? $this->getData('grid_url') : $this->getUrl('*/*/watcherlist', array('_current' => true));
     }
 
+    /**
+     * @param $row
+     * @return mixed
+     */
     public function getRowUrl($row) {
         return $this->getUrl('adminhtml/customer/edit', array('id' => $row->getId()));
     }

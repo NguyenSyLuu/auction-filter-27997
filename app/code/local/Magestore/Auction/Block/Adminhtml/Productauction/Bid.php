@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Bid extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Bid constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -37,13 +40,19 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Bid extends Mage_Adminhtm
         $this->_removeButton('delete');
 		$this->_removeButton('reset');
 	}
-		
+
+    /**
+     * @return mixed
+     */
     public function getHeaderText()
     {
 		return Mage::helper('auction')->__("Auction Bids for '%s'", $this->htmlEscape(Mage::registry('productauction_data')->getProductName()));
     }
-	
-     public function getProductauction()     
+
+    /**
+     * @return mixed
+     */
+    public function getProductauction()
      { 
         if (!$this->hasData('productauction_data')) 
 		{

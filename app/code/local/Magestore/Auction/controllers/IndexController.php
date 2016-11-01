@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magestore
  *
@@ -22,36 +23,38 @@
  * @license     http://www.magestore.com/license-agreement.html
  *
  */
+class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action
+{
 
-class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
-
-    public function indexAction() {
+    public function indexAction()
+    {
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
             $this->_redirect('', array());
             return;
         }
         if (!Mage::registry('current_category')) {
             $category = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId())
-                    ->setIsAnchor(1)
-                    ->setName(Mage::helper('core')->__('Auctions'))
-                    ->setDisplayMode('PRODUCTS');
+                ->setIsAnchor(1)
+                ->setName(Mage::helper('core')->__('Auctions'))
+                ->setDisplayMode('PRODUCTS');
             Mage::register('current_category', $category);
         }
         Mage::helper('auction')->updateAuctionStatus();
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('Auctions'));
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('Auctions'));
         $this->renderLayout();
     }
 
-    public function checkbiddernameAction() {
+    public function checkbiddernameAction()
+    {
         $html = "";
         $bidder_name = $this->getRequest()->getParam('bidder_name');
 
         $collection = Mage::getResourceModel('customer/customer_collection')
-                ->addAttributeToFilter('bidder_name', $bidder_name);
-        if (count($collection)&&$bidder_name!='') {
+            ->addAttributeToFilter('bidder_name', $bidder_name);
+        if (count($collection) && $bidder_name != '') {
             $html .= '<input type="hidden" value="2" id="is_valid_bidder_name">';
             $html .= '<div class="error-msg"><p>' . Mage::helper('core')->__('This biddder name is existed') . '</p></div>';
         } else {
@@ -61,22 +64,22 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         $this->getResponse()->setBody($html);
     }
 
-    public function savebiddernameAction() {
+    public function savebiddernameAction()
+    {
         $bidder_name = $this->getRequest()->getPost('bidder_name');
-        if($bidder_name==''){
+        if ($bidder_name == '') {
             Mage::getSingleton('core/session')->setData('save_biddername_error', Mage::helper('auction')->__('Please enter your bidder name!'));
             $this->_redirect('auction/index/customerbid', array());
             return;
         }
         $collection = Mage::getResourceModel('customer/customer_collection')
-                ->addAttributeToFilter('bidder_name', $bidder_name);
-        
-        if (!count($collection)&&$bidder_name!='') {
+            ->addAttributeToFilter('bidder_name', $bidder_name);
+
+        if (!count($collection) && $bidder_name != '') {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             try {
                 $customer->setBidderName($bidder_name)
-                        ->save()
-                ;
+                    ->save();
                 Mage::getSingleton('core/session')->addSuccess(Mage::helper('auction')->__('Your bidder name has been successfully created.'));
                 $backUrl = Mage::getSingleton('core/session')->getData('auction_backurl');
                 if ($backUrl) {
@@ -99,7 +102,8 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    public function updateauctioninfoAction() {
+    public function updateauctioninfoAction()
+    {
         $auction_id = $this->getRequest()->getParam('id');
         $tmpl = $this->getRequest()->getParam('tmpl');
         $cur_bid_id = $this->getRequest()->getParam('current_bid_id');
@@ -110,7 +114,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         $lastBid = $auction->getLastBid();
         $auction->setLastBid($lastBid);
 
-        if ((int) $cur_bid_id == (int) $lastBid->getId()) //not updated
+        if ((int)$cur_bid_id == (int)$lastBid->getId()) //not updated
             return;
 
         $result = null;
@@ -132,10 +136,11 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         $this->getResponse()->setBody($result);
     }
 
-    public function updatepriceconditionAction() {
+    public function updatepriceconditionAction()
+    {
         $auction_id = $this->getRequest()->getParam('id');
         $auction = Mage::getModel('auction/productauction')->load($auction_id);
-        $lastBid = $auction->getLastBid();
+//        $lastBid = $auction->getLastBid();
         $min_next_price = $auction->getMinNextPrice();
         $max_next_price = $auction->getMaxNextPrice();
         $max_condition = $max_next_price ? ' ' . $this->__('to') . ' ' . Mage::helper('core')->currency($max_next_price) : '';
@@ -143,13 +148,14 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         if ($max_condition)
             $html = '(' . Mage::helper('core')->__('Enter an amount from') . ' ' . Mage::helper('core')->currency($min_next_price) . $max_condition . ')';
         else
-            $html = '(' . Mage::helper('core')->__('Enter %s or more',Mage::helper('core')->currency($min_next_price)) . ')';
+            $html = '(' . Mage::helper('core')->__('Enter %s or more', Mage::helper('core')->currency($min_next_price)) . ')';
 
         $this->getResponse()->setHeader('Content-type', 'application/x-json');
         $this->getResponse()->setBody($html);
     }
 
-    public function customerbidAction() {
+    public function customerbidAction()
+    {
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $this->_redirect('customer/account/login', array());
             return;
@@ -158,17 +164,18 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         Mage::helper('auction')->updateAuctionStatus();
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('My Bids'));
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('My Bids'));
 
         $listBidBlock = $this->getLayout()->getBlock('customerbid');
         $pager = $this->getLayout()->createBlock('page/html_pager', 'auction.bid.pager')
-                ->setCollection($listBidBlock->getListCustomerbid());
+            ->setCollection($listBidBlock->getListCustomerbid());
         $listBidBlock->setChild('pager', $pager);
         $this->renderLayout();
     }
 
-    public function watchlistAction() {
+    public function watchlistAction()
+    {
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $this->_redirect('customer/account/login', array());
             return;
@@ -177,17 +184,18 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         Mage::helper('auction')->updateAuctionStatus();
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('My Watched Autions'));
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('My Watched Autions'));
 
         $listAuctionBlock = $this->getLayout()->getBlock('watchlist');
         $pager = $this->getLayout()->createBlock('page/html_pager', 'watchlist.pager')
-                ->setCollection($listAuctionBlock->getAuctionCollection());
+            ->setCollection($listAuctionBlock->getAuctionCollection());
         $listAuctionBlock->setChild('pager', $pager);
         $this->renderLayout();
     }
 
-    public function autobidlistAction() {
+    public function autobidlistAction()
+    {
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $this->_redirect('customer/account/login', array());
             return;
@@ -196,17 +204,18 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         Mage::helper('auction')->updateAuctionStatus();
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('My Auto Bids'));
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('My Auto Bids'));
 
         $listAutoBidBlock = $this->getLayout()->getBlock('autobidlist');
         $pager = $this->getLayout()->createBlock('page/html_pager', 'autobidlist.pager')
-                ->setCollection($listAutoBidBlock->getBidCollection());
+            ->setCollection($listAutoBidBlock->getBidCollection());
         $listAutoBidBlock->setChild('pager', $pager);
         $this->renderLayout();
     }
 
-    public function emailsettingAction() {
+    public function emailsettingAction()
+    {
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $this->_redirect('customer/account/login', array());
             return;
@@ -214,13 +223,14 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('Auction Email Settings'));
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('Auction Email Settings'));
 
         $this->renderLayout();
     }
 
-    public function saveemailAction() {
+    public function saveemailAction()
+    {
         $param = $this->getRequest()->getPost();
         if (!isset($param['place_bid'])) {
             $param['place_bid'] = '0';
@@ -254,7 +264,8 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         $this->_redirect('*/*/emailsetting');
     }
 
-    public function checkoutAction() {
+    public function checkoutAction()
+    {
         $bid_id = $this->getRequest()->getParam('id');
 
         if (!$bid_id) {
@@ -322,7 +333,8 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    public function viewbidsAction() {
+    public function viewbidsAction()
+    {
         $auction_id = $this->getRequest()->getParam('id');
 
         Mage::helper('auction')->updateAuctionStatus($auction_id);
@@ -347,23 +359,24 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
         $this->loadLayout();
         $this->getLayout()
-                ->getBlock('head')
-                ->setTitle(Mage::helper('core')->__('Bid History') . ' - ' . $auction->getProductName());
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('Bid History') . ' - ' . $auction->getProductName());
 
         $listBidBlock = $this->getLayout()->getBlock('auction.history');
 
         $pager = $this->getLayout()->createBlock('page/html_pager', 'auction.bid.pager')
-                ->setCollection($listBidBlock->getListProductBid());
+            ->setCollection($listBidBlock->getListProductBid());
 
         $listBidBlock->setChild('pager', $pager);
 
         $this->renderLayout();
     }
 
-    public function changewatcherAction() {
+    public function changewatcherAction()
+    {
         $result = null;
-        $_helper = Mage::helper('auction');
-        $notice = Mage::getSingleton('auction/notice');
+//        $_helper = Mage::helper('auction');
+//        $notice = Mage::getSingleton('auction/notice');
         $this->getResponse()->setHeader('Content-type', 'application/x-json');
         $productId = $this->getRequest()->getParam('product_id');
         $isWatcher = $this->getRequest()->getParam('is_watcher');
@@ -391,9 +404,9 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         $model = Mage::getModel('auction/watcher')->getCollection()
-                ->addFieldToFilter('productauction_id', $auction->getId())
-                ->addFieldToFilter('customer_id', $customer->getId())
-                ->getFirstItem();
+            ->addFieldToFilter('productauction_id', $auction->getId())
+            ->addFieldToFilter('customer_id', $customer->getId())
+            ->getFirstItem();
 
         $storeId = Mage::app()->getStore()->getId();
 
@@ -401,16 +414,16 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
             $model->setStatus($isWatcher);
         } else {
             $model->setProductauctionId($auction->getId())
-                    ->setCustomerId($customer->getId())
-                    ->setCustomerName($customer->getName())
-                    ->setCustomerEmail($customer->getEmail())
-                    ->setStoreId($storeId)
-                    ->setStatus($isWatcher);
+                ->setCustomerId($customer->getId())
+                ->setCustomerName($customer->getName())
+                ->setCustomerEmail($customer->getEmail())
+                ->setStoreId($storeId)
+                ->setStatus($isWatcher);
         }
 
         try {
             $model->setCreatedTime(Mage::getSingleton('core/date')->timestamp(time()))
-                    ->save();
+                ->save();
 
             $this->getResponse()->setRedirect($product->getProductUrl());
 
@@ -420,7 +433,8 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    public function bidAction() {
+    public function bidAction()
+    {
         $result = null;
         $_helper = Mage::helper('auction');
         $notice = Mage::getSingleton('auction/notice');
@@ -466,7 +480,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
             if ($bidderNameType == '3') {
                 if (!$customer->getBidderName()) {
                     $customer->setBidderName($customer->getName())
-                            ->save();
+                        ->save();
                 }
             }
         }
@@ -481,7 +495,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
         $timestamp = Mage::getModel('core/date')->timestamp(time());
 
-        $lastBid = $auction->getLastBid();
+//        $lastBid = $auction->getLastBid();
 
 
         if (!Mage::helper('auction')->checkValidBidPrice($data['price'], $auction, $bidType)) {
@@ -520,13 +534,13 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
             $data['created_time'] = date('H:i:s', $timestamp);
             $data['status'] = 3; //waiting
             $auctionbid->setData($data)
-                    ->setStoreId($store_id);
+                ->setStoreId($store_id);
 
             //get autobids greater  current price (before save)
             $customersId = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('overautobid', 0)->getAllCustomerIds();
             $autobids = Mage::getModel('auction/autobid')->getCollection()
-                    ->addFieldToFilter('productauction_id', $auction->getProductauctionId())
-                    ->addFieldToFilter('price', array('gteq' => $auction->getMinNextPrice()));
+                ->addFieldToFilter('productauction_id', $auction->getProductauctionId())
+                ->addFieldToFilter('price', array('gteq' => $auction->getMinNextPrice()));
 
             if (count($customersId) > 0) {
                 $autobids->addFieldToFilter('customer_id', array('nin' => $customersId));
@@ -549,20 +563,19 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
                 //get autobids over
                 $overAutobids = Mage::getModel('auction/autobid')->getCollection()
-                        ->addFieldToFilter('productauction_id', $auction->getProductauctionId())
-                        ->addFieldToFilter('price', array('lt' => $auction->getMinNextPrice()))
-                        ->addFieldToFilter('autobid_id', array('in' => $autobidIds))
-                ;
+                    ->addFieldToFilter('productauction_id', $auction->getProductauctionId())
+                    ->addFieldToFilter('price', array('lt' => $auction->getMinNextPrice()))
+                    ->addFieldToFilter('autobid_id', array('in' => $autobidIds));
 
                 if (count($overAutobids))
                     $auctionbid->noticeOverautobid($overAutobids);
 
                 if (strtotime($auction->getEndDate() . ' ' . $auction->getEndTime()) - $timestamp <= $auction->getLimitTime()) {
-                    $newTime = $timestamp + (int) $auction->getLimitTime();
+                    $newTime = $timestamp + (int)$auction->getLimitTime();
                     $new_endDate = date('Y-m-d', $newTime);
                     $new_endTime = date('H:i:s', $newTime);
                     $auction->setEndDate($new_endDate)
-                            ->setEndTime($new_endTime);
+                        ->setEndTime($new_endTime);
                     $auction->save();
                 }
 
@@ -611,17 +624,17 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
             }
         } else {
             $autobid = Mage::getModel('auction/autobid')->getCollection()
-                    ->addFieldToFilter('customer_id', $customer->getId())
-                    ->addFieldToFilter('productauction_id', $auction->getId())
-                    ->addFieldToFilter('price', array('gt' => $auction->getMinNextPrice()))
-                    ->getFirstItem();
+                ->addFieldToFilter('customer_id', $customer->getId())
+                ->addFieldToFilter('productauction_id', $auction->getId())
+                ->addFieldToFilter('price', array('gt' => $auction->getMinNextPrice()))
+                ->getFirstItem();
             $check_autobid = Mage::getStoreConfig('auction/general/auto_bid');
 
             // check allow customer config change autobid price for multiple times.
             if ($check_autobid == 1) {
                 $data['created_time'] = date('Y-m-d H:i:s', Mage::getSingleton('core/date')->timestamp(time()));
                 $autobid->setData($data)
-                        ->setStoreId($store_id);
+                    ->setStoreId($store_id);
                 try {
                     $autobid->save();
                     $autobid->emailToBidder();
@@ -636,7 +649,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
             } elseif ($check_autobid == 2 && !($autobid->getId())) {
                 $data['created_time'] = date('Y-m-d H:i:s', Mage::getSingleton('core/date')->timestamp(time()));
                 $autobid->setData($data)
-                        ->setStoreId($store_id);
+                    ->setStoreId($store_id);
 
                 try {
                     $autobid->save();
@@ -665,7 +678,8 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    public function cancelBidAction() {
+    public function cancelBidAction()
+    {
         $id = $this->getRequest()->getParam('id');
 
         $bid = Mage::getModel('auction/auction')->load($id);
@@ -684,7 +698,14 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    protected function _getAuctionInfo($auction, $lastBid = null, $tmpl = null) {
+    /**
+     * @param $auction
+     * @param null $lastBid
+     * @param null $tmpl
+     * @return mixed
+     */
+    protected function _getAuctionInfo($auction, $lastBid = null, $tmpl = null)
+    {
         $lastBid = $lastBid ? $lastBid : $auction->getLastBid();
         $tmpl = $tmpl ? $tmpl : 'auctioninfo';
         $auction->setLastBid($lastBid);
@@ -695,10 +716,16 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         return $block->toHtml();
     }
 
-    protected function _getPriceAuction($auction, $lastBid = null) {
+    /**
+     * @param $auction
+     * @param null $lastBid
+     * @return string
+     */
+    protected function _getPriceAuction($auction, $lastBid = null)
+    {
         $auction->setCurrentPrice(null)
-                ->setMinNextPrice(null)
-                ->setMaxNextPrice(null);
+            ->setMinNextPrice(null)
+            ->setMaxNextPrice(null);
 
         $min_next_price = $auction->getMinNextPrice();
         $max_next_price = $auction->getMaxNextPrice();
@@ -706,7 +733,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         if ($max_condition)
             $html = '(' . Mage::helper('core')->__('Enter an amount from') . ' ' . Mage::helper('core')->currency($min_next_price) . $max_condition . ')';
         else
-            $html = '(' . Mage::helper('core')->__('Enter %s or more',Mage::helper('core')->currency($min_next_price)) . ')';
+            $html = '(' . Mage::helper('core')->__('Enter %s or more', Mage::helper('core')->currency($min_next_price)) . ')';
 
         return $html;
     }

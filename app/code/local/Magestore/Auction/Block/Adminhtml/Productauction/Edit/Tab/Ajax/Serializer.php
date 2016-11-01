@@ -26,13 +26,19 @@
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Ajax_Serializer
 	extends Mage_Core_Block_Template
 {
+    /**
+     * @return $this
+     */
     public function _construct()
     {
         parent::_construct();
         $this->setTemplate('auction/serializer.phtml');
         return $this;
     }
-	
+
+    /**
+     * @return string
+     */
     public function getObjectsJSON()
     {
         $result = array();

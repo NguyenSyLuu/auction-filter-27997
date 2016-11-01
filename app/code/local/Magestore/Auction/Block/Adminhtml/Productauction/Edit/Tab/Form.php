@@ -25,11 +25,17 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Form constructor.
+     */
     public function __construct() {
         parent::__construct();
         //$this->setTemplate('auction/auction.phtml');
     }
 
+    /**
+     * @return mixed
+     */
     public function getProductauction() {
         if (!$this->hasData('productauction_data')) {
             $this->setData('productauction_data', Mage::registry('productauction_data'));
@@ -37,6 +43,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Form extends Mag
         return $this->getData('productauction_data');
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareForm() {
 
         $form = new Varien_Data_Form();

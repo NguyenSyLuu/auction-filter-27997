@@ -30,8 +30,13 @@ class Magestore_Auction_Model_Value extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('auction/value');
     }
-	
-	public function loadByAuctionStore($auction_id,$store_id)
+
+    /**
+     * @param $auction_id
+     * @param $store_id
+     * @return $this
+     */
+    public function loadByAuctionStore($auction_id, $store_id)
 	{
 		$collection = $this->getCollection()
 							->addFieldToFilter('productauction_id',$auction_id)

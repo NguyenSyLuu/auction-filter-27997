@@ -26,7 +26,10 @@
 class Magestore_Auction_Adminhtml_Auction_AuctionController extends Mage_Adminhtml_Controller_Action
 {
 
-	protected function _initAction() {
+    /**
+     * @return $this
+     */
+    protected function _initAction() {
 		$this->loadLayout()
 			->_setActiveMenu('auction/items')
 			->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Item Manager'));
@@ -188,6 +191,11 @@ class Magestore_Auction_Adminhtml_Auction_AuctionController extends Mage_Adminht
         $this->_sendUploadResponse($fileName, $content);
     }
 
+    /**
+     * @param $fileName
+     * @param $content
+     * @param string $contentType
+     */
     protected function _sendUploadResponse($fileName, $content, $contentType='application/octet-stream')
     {
         $response = $this->getResponse();
@@ -203,6 +211,9 @@ class Magestore_Auction_Adminhtml_Auction_AuctionController extends Mage_Adminht
         $response->sendResponse();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('auction');

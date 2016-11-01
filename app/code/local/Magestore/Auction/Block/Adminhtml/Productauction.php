@@ -25,6 +25,9 @@
  */
 class Magestore_Auction_Block_Adminhtml_Productauction extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction constructor.
+     */
     public function __construct()
     {
         $this->_controller = 'adminhtml_productauction';

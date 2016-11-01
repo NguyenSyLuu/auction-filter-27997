@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tabs constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('auction_producttab');
@@ -32,6 +35,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tabs extends Mage_Ad
         $this->setTitle(Mage::helper('auction')->__('Auction Information'));
     }
 
+    /**
+     * @return mixed
+     */
     protected function _beforeToHtml() {
         $auction = $this->getProductauction();
 
@@ -91,6 +97,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tabs extends Mage_Ad
         return parent::_beforeToHtml();
     }
 
+    /**
+     * @return mixed
+     */
     public function getProductauction() {
         if (!$this->hasData('productauction_data')) {
             $this->setData('productauction_data', Mage::registry('productauction_data'));

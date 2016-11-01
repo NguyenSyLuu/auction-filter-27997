@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Grid constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('productauctionGrid');
@@ -33,6 +36,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Grid extends Mage_Adminht
         $this->setSaveParametersInSession(true);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $timezone = ((Mage::app()->getLocale()->date()->get(Zend_Date::TIMEZONE_SECS)) / 3600);
         $collection = Mage::getModel('auction/productauction')->getCollection();
@@ -46,6 +52,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Grid extends Mage_Adminht
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $this->addColumn('productauction_id', array(
             'header' => Mage::helper('auction')->__('ID'),
@@ -134,6 +143,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Grid extends Mage_Adminht
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return $this
+     */
     protected function _prepareMassaction() {
         $this->setMassactionIdField('productauction_id');
         $this->getMassactionBlock()->setFormFieldName('productauction');
@@ -177,6 +189,10 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Grid extends Mage_Adminht
         return $this;
     }
 
+    /**
+     * @param $row
+     * @return mixed
+     */
     public function getRowUrl($row) {
         return $this->getUrl('*/*/edit', array('id' => $row->getId()));
     }

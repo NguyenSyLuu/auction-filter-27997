@@ -41,6 +41,10 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         $this->_init('auction/auction');
     }
 
+    /**
+     * @param $productauction_id
+     * @return mixed
+     */
     public function getLastAuctionBid($productauction_id) {
         $collection = $this->getCollection()
                 ->addFieldToFilter('productauction_id', $productauction_id)
@@ -50,6 +54,10 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $collection->getFirstItem();
     }
 
+    /**
+     * @param $customerId
+     * @return mixed
+     */
     public function getListBidByCustomerId($customerId) {
         $collection = $this->getCollection()
                 ->addFieldToFilter('customer_id', $customerId)
@@ -63,6 +71,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         
     }
 
+    /**
+     * @return bool
+     */
     public function is_bidwinner() {
         $bid_winner = Mage::helper('auction')->getWinnerBid($this->getProductauctionId());
 
@@ -72,15 +83,24 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return false;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFormatedTime() {
         $bid_date = new Zend_Date($this->getCreatedDate() . ' ' . $this->getCreatedTime(), null, 'en_GB');
         return Mage::helper('core')->formatDate($bid_date, 'medium', true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getFormatedPrice() {
         return Mage::helper('core')->currency($this->getPrice());
     }
 
+    /**
+     * @return mixed
+     */
     public function getTimeLeft() {
         if (!$this->getData('timeleft')) {
             $this->setData('timeleft', $this->getAuction()->getTimeLeft());
@@ -88,6 +108,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this->getData('timeleft');
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuction() {
         if (!$this->getData('auction')) {
             $auction = Mage::getModel('auction/productauction')->load($this->getProductauctionId());
@@ -97,6 +120,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this->getData('auction');
     }
 
+    /**
+     * @return mixed
+     */
     public function getOverBid() {
         $multi_winners = $this->getAuction()->getMultiWinner();
         $multi_winners = $multi_winners ? $multi_winners : 1;
@@ -133,6 +159,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         }
     }
 
+    /**
+     * @return $this
+     */
     public function emailToBidder() {
         $cusId = $this->getCustomerId();
         $customer = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('customer_id', $cusId)->getFirstItem();
@@ -166,6 +195,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function emailToWatcher() {
         $storeID = $this->getStoreId();
         $translate = Mage::getSingleton('core/translate');
@@ -208,6 +240,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function emailToAdmin() {
         if (Mage::getStoreConfig(self::XML_PATH_NEW_BID_TO_ADMIN) != '0') {
             $storeID = $this->getStoreId();
@@ -237,6 +272,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         }
     }
 
+    /**
+     * @return $this
+     */
     public function emailToWinner() {
         if (!Mage::registry('notice_to_winner')) {
             Mage::register('notice_to_winner', '1');
@@ -269,6 +307,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         }
     }
 
+    /**
+     * @return $this
+     */
     public function noticeCanceled() {
         $cusId = $this->getCustomerId();
         $customer = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('customer_id', $cusId)->getFirstItem();
@@ -302,6 +343,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function noticeHighest() {
         $cusId = $this->getCustomerId();
         $customer = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('customer_id', $cusId)->getFirstItem();
@@ -335,6 +379,9 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function noticeOverbid() {
         $overBid = $this->getOverBid();
         if (!$overBid->getId())
@@ -372,6 +419,10 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @param $overAutobids
+     * @return $this
+     */
     public function noticeOverautobid($overAutobids) {
         $storeID = $this->getStoreId();
         $translate = Mage::getSingleton('core/translate');
@@ -382,7 +433,7 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
 
         foreach ($overAutobids as $overAutobid) {
             //$customer = Mage::getModel('customer/customer')->load($overAutobid->getCustomerId());
-            $auction = Mage::getModel('auction/productauction')->load($overAutobid->getProductauctionId());
+            //$auction = Mage::getModel('auction/productauction')->load($overAutobid->getProductauctionId());
             $recipient['email'] = $overAutobid->getCustomerEmail();
             $recipient['name'] = $overAutobid->getCustomerName();
             $mailTemplate->setDesignConfig(array('area' => 'frontend', 'store' => $storeID))
@@ -398,6 +449,11 @@ class Magestore_Auction_Model_Auction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
+    /**
+     * @param $customer_id
+     * @param $production_id
+     * @return $this
+     */
     public function sendNoticToAllBider($customer_id, $production_id) {
         $customersId = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('overbid', 0)->getAllCustomerIds();
         $collection = $this->getCollection()->addFieldToFilter('productauction_id', $production_id)

@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_Adminhtml_Controller_Action {
 
+    /**
+     * @return $this
+     */
     protected function _initAction() {
         $this->loadLayout()
                 ->_setActiveMenu('auction/productauction')
@@ -315,6 +318,10 @@ class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('auction')->__('Unable to find item to save'));
         $this->_redirect('*/*/');
     }
+
+    /**
+     * @return mixed
+     */
     protected function _isAllowed() {
         return Mage::getSingleton('admin/session')->isAllowed('auction');
     }
@@ -577,6 +584,11 @@ class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_
         $this->_sendUploadResponse($fileName, $content);
     }
 
+    /**
+     * @param $fileName
+     * @param $content
+     * @param string $contentType
+     */
     protected function _sendUploadResponse($fileName, $content, $contentType = 'application/octet-stream') {
         $response = $this->getResponse();
         $response->setHeader('HTTP/1.1 200 OK', '');
@@ -591,6 +603,11 @@ class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_
         $response->sendResponse();
     }
 
+    /**
+     * @param $productauction
+     * @param null $status
+     * @return bool
+     */
     public function checkMassStatus($productauction, $status = null) {
         $check_autobid = Mage::getModel('auction/autobid')->getCollection()
                 ->addFieldToFilter('productauction_id', $productauction->getId());
@@ -620,6 +637,11 @@ class Magestore_Auction_Adminhtml_Auction_ProductauctionController extends Mage_
         }
     }
 
+    /**
+     * @param $production_id
+     * @param null $status
+     * @return bool
+     */
     public function checkStatus($production_id, $status = null) {
         $productauction = Mage::getModel('auction/productauction')->load($production_id);
 

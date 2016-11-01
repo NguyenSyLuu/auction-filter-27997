@@ -25,6 +25,10 @@
 
 class Magestore_Auction_Helper_Tax extends Mage_Tax_Helper_Data {
 
+    /**
+     * @param null $store
+     * @return bool
+     */
     public function priceIncludesTax($store=null)
     {
 		$bid_id = Mage::getSingleton('core/session')->getData('bid_id');

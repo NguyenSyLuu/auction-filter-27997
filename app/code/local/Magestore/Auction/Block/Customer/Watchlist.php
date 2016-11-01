@@ -24,8 +24,11 @@
  */
 
 class Magestore_Auction_Block_Customer_Watchlist extends Mage_Core_Block_Template
-{	
-	public function getCustomer()
+{
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
 	{
 		if(! $this->hasData('customer'))
 		{
@@ -34,8 +37,11 @@ class Magestore_Auction_Block_Customer_Watchlist extends Mage_Core_Block_Templat
 		}
 		return $this->getData('customer');
 	}
-    
-    public function getAuctionCollection()     
+
+    /**
+     * @return mixed
+     */
+    public function getAuctionCollection()
      { 
         if (!$this->hasData('watchlist')) 
 		{
@@ -45,8 +51,12 @@ class Magestore_Auction_Block_Customer_Watchlist extends Mage_Core_Block_Templat
 		}
         return $this->getData('watchlist');
     }
-	
-	public function getProduct($product_id)
+
+    /**
+     * @param $product_id
+     * @return mixed
+     */
+    public function getProduct($product_id)
 	{
 		if(!$this->hasData('product_'.$product_id)){
 			$product = Mage::getModel('catalog/product')->load($product_id);
@@ -54,8 +64,12 @@ class Magestore_Auction_Block_Customer_Watchlist extends Mage_Core_Block_Templat
 		}
 		return $this->getData('product_'.$product_id);
 	}
-	
-	public function getHistoryUrl($auction)
+
+    /**
+     * @param $auction
+     * @return mixed
+     */
+    public function getHistoryUrl($auction)
 	{
 		return $this->getUrl('auction/index/viewbids',array('id'=>$auction->getId()));
 	}

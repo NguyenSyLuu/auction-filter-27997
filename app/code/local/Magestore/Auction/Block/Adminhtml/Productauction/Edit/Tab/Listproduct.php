@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('list_product_grid');
@@ -35,6 +38,10 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         }
     }
 
+    /**
+     * @param $column
+     * @return $this
+     */
     protected function _addColumnFilterToCollection($column) {
         // Set custom filter for in product flag
         if ($column->getId() == 'in_products') {
@@ -55,6 +62,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $collection = Mage::getModel('catalog/product')
                 ->getCollection()
@@ -86,6 +96,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
 
         $this->addColumn('in_products', array(
@@ -153,6 +166,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return array
+     */
     protected function _getSelectedProducts() {
         $products = $this->getProduct();
         if (!is_array($products)) {
@@ -161,6 +177,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         return $products;
     }
 
+    /**
+     * @return array
+     */
     public function getSelectedRelatedProducts() {
         $products = array();
 
@@ -173,14 +192,24 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Listproduct exte
         return $products;
     }
 
+    /**
+     * @param $row
+     * @return mixed
+     */
     public function getRowUrl($row) {
         return $this->getUrl('adminhtml/catalog_product/edit', array('id' => $row->getId()));
     }
 
+    /**
+     * @return mixed
+     */
     public function getGridUrl() {
         return $this->getData('grid_url') ? $this->getData('grid_url') : $this->getUrl('*/*/listproductgrid', array('_current' => true));
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuction() {
         return Mage::getModel('auction/productauction')
                         ->load($this->getRequest()->getParam('id'))

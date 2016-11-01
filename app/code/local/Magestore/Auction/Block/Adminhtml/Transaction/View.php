@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Transaction_View extends Mage_Adminhtml_Block_Template {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Transaction_View constructor.
+     */
     public function __construct() {
         parent::_construct();
        
@@ -33,6 +36,9 @@ class Magestore_Auction_Block_Adminhtml_Transaction_View extends Mage_Adminhtml_
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getTransaction() {
         $id = $this->getRequest()->getParam('id');
 

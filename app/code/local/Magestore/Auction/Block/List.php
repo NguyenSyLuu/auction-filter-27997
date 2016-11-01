@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_List extends Mage_Core_Block_Template {
 
+    /**
+     * @return mixed
+     */
     protected function getListAuction() {
         $store_id = Mage::app()->getStore()->getId();
         $Ids = Mage::helper('auction')->getProductAuctionIds($store_id, true);

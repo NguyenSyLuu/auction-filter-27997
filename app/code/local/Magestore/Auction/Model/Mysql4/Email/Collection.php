@@ -30,7 +30,10 @@ class Magestore_Auction_Model_Mysql4_Email_Collection extends Mage_Core_Model_My
         parent::_construct();
         $this->_init('auction/email');
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getAllCustomerIds(){
     	   $idsSelect = clone $this->getSelect();
      	   $idsSelect->reset(Zend_Db_Select::ORDER);

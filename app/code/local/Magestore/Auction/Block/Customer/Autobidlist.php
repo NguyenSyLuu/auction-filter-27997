@@ -24,8 +24,11 @@
  */
 
 class Magestore_Auction_Block_Customer_Autobidlist extends Mage_Core_Block_Template
-{	
-	public function getCustomer()
+{
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
 	{
 		if(! $this->hasData('customer'))
 		{
@@ -34,8 +37,11 @@ class Magestore_Auction_Block_Customer_Autobidlist extends Mage_Core_Block_Templ
 		}
 		return $this->getData('customer');
 	}
-    
-    public function getBidCollection()     
+
+    /**
+     * @return mixed
+     */
+    public function getBidCollection()
      { 
         if (!$this->hasData('autobidlist')) 
 		{
@@ -47,8 +53,12 @@ class Magestore_Auction_Block_Customer_Autobidlist extends Mage_Core_Block_Templ
 		}
         return $this->getData('autobidlist');
     }
-	
-	public function getAuction($bid)
+
+    /**
+     * @param $bid
+     * @return mixed
+     */
+    public function getAuction($bid)
 	{
 		if(!$this->hasData('auction_'.$bid->getProductauctionId())){
 			$auction = Mage::getModel('auction/productauction')->load($bid->getProductauctionId());
@@ -56,8 +66,12 @@ class Magestore_Auction_Block_Customer_Autobidlist extends Mage_Core_Block_Templ
 		}
 		return $this->getData('auction_'.$bid->getProductauctionId());
 	}
-	
-	public function getProduct($bid)
+
+    /**
+     * @param $bid
+     * @return mixed
+     */
+    public function getProduct($bid)
 	{
 		$auction = $this->getAuction($bid);
 		if(!$this->hasData('product_'.$auction->getProductId())){
@@ -66,13 +80,21 @@ class Magestore_Auction_Block_Customer_Autobidlist extends Mage_Core_Block_Templ
 		}
 		return $this->getData('product_'.$auction->getProductId());
 	}
-	
-	public function getHistoryUrl($bid)
+
+    /**
+     * @param $bid
+     * @return mixed
+     */
+    public function getHistoryUrl($bid)
 	{
 		return $this->getUrl('auction/index/viewbids',array('id'=>$this->getAuction($bid)->getId()));
 	}
-	
-	public function getTotalBid($bid)
+
+    /**
+     * @param $bid
+     * @return mixed
+     */
+    public function getTotalBid($bid)
 	{
 		return $this->getAuction($bid)->getTotalBid();
 	}

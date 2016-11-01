@@ -26,6 +26,9 @@
 class Magestore_Auction_Adminhtml_Auction_TransactionController extends Mage_Adminhtml_Controller_Action
 {
 
+    /**
+     * @return $this
+     */
     protected function _initAction()
     {
         $this->loadLayout()
@@ -49,6 +52,9 @@ class Magestore_Auction_Adminhtml_Auction_TransactionController extends Mage_Adm
 
     }
 
+    /**
+     * @return mixed
+     */
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('auction');
@@ -72,6 +78,11 @@ class Magestore_Auction_Adminhtml_Auction_TransactionController extends Mage_Adm
         $this->_sendUploadResponse($fileName, $content);
     }
 
+    /**
+     * @param $fileName
+     * @param $content
+     * @param string $contentType
+     */
     protected function _sendUploadResponse($fileName, $content, $contentType = 'application/octet-stream')
     {
         $response = $this->getResponse();

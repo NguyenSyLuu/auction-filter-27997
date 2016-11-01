@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Customer_Bidlist extends Mage_Core_Block_Template {
 
+    /**
+     * @return mixed
+     */
     public function _prepareLayout() {
         $return = parent::_prepareLayout();
 
@@ -44,6 +47,9 @@ class Magestore_Auction_Block_Customer_Bidlist extends Mage_Core_Block_Template 
         return $return;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCustomer() {
         if (!$this->hasData('customer')) {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
@@ -52,6 +58,9 @@ class Magestore_Auction_Block_Customer_Bidlist extends Mage_Core_Block_Template 
         return $this->getData('customer');
     }
 
+    /**
+     * @return mixed
+     */
     public function getListCustomerbid() {
         if (!$this->hasData('listcustomerbid')) {
             $customerId = $this->getCustomer()->getId();
@@ -69,8 +78,11 @@ class Magestore_Auction_Block_Customer_Bidlist extends Mage_Core_Block_Template 
         return $this->getData('listcustomerbid');
     }
 
+    /**
+     * @return string
+     */
     public function getNavHtml() {
-        $auction_id = $this->getRequest()->getParam('id');
+        //$auction_id = $this->getRequest()->getParam('id');
         $curr_page = $this->getRequest()->getParam('page');
         $curr_page = $curr_page ? $curr_page : 1;
 

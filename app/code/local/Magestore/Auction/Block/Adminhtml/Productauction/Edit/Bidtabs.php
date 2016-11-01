@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Bidtabs extends Mage_Adminhtml_Block_Widget_Tabs {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Bidtabs constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('auction_producttab');
@@ -32,6 +35,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Bidtabs extends Mage
         $this->setTitle(Mage::helper('auction')->__('Auction Information'));
     }
 
+    /**
+     * @return mixed
+     */
     protected function _beforeToHtml() {
         $this->addTab('form_listbid', array(
             'label' => Mage::helper('auction')->__('List Bids'),

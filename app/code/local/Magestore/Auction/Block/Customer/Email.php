@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Customer_Email extends Mage_Core_Block_Template {
 
+    /**
+     * @return mixed
+     */
     public function getCustomer() {
         if (!$this->hasData('customer')) {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
@@ -32,7 +35,11 @@ class Magestore_Auction_Block_Customer_Email extends Mage_Core_Block_Template {
         }
         return $this->getData('customer');
     }
-    
+
+    /**
+     * @param $customer
+     * @return mixed
+     */
     public function getEmailInfor($customer){
         $model = Mage::getModel('auction/email')->getCollection()->addFieldToFilter('customer_id', $customer->getId())->getFirstItem();
         return $model->getData();

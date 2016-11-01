@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Model_Event {
 
+    /**
+     * @return string
+     */
     public function getlink() {
         $link = Mage::app()->getRequest()->getRouteName() .
                 Mage::app()->getRequest()->getControllerName() .
@@ -33,6 +36,10 @@ class Magestore_Auction_Model_Event {
         return $link;
     }
 
+    /**
+     * @param $observer
+     * @return $this
+     */
     public function catalog_product_collection_apply_limitations_before($observer) {
         if (!Mage::registry('load_list_auction')) {
             Mage::register('load_list_auction', '1');
@@ -44,6 +51,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function catalog_product_save_after($observer) {
         $product = $observer->getProduct();
 
@@ -71,6 +81,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function customer_save_after($observer) {
         $customer = $observer->getCustomer();
 
@@ -109,6 +122,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function customer_login($observer) {
         $backUrl = Mage::getSingleton('core/session')->getData('auction_backurl');
         if ($backUrl) {
@@ -121,6 +137,9 @@ class Magestore_Auction_Model_Event {
         Mage::helper('auction')->updateAuctionStatus();
     }
 
+    /**
+     * @param null $auctionid
+     */
     public function autobid($auctionid = null) {
         if ($auctionid)
             Mage::helper('auction')->updateAuctionStatus($auctionid);
@@ -268,6 +287,12 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $auction
+     * @param null $lastBid
+     * @param null $tmpl
+     * @return mixed
+     */
     protected function _getAuctionInfo($auction, $lastBid = null, $tmpl = null) {
         $lastBid = $lastBid ? $lastBid : $auction->getLastBid();
         $tmpl = $tmpl ? $tmpl : 'auctioninfo';
@@ -279,6 +304,11 @@ class Magestore_Auction_Model_Event {
         return $block->toHtml();
     }
 
+    /**
+     * @param $auction
+     * @param null $lastBid
+     * @return string
+     */
     protected function _getPriceAuction($auction, $lastBid = null) {
         $auction->setCurrentPrice(null)
                 ->setMinNextPrice(null)
@@ -293,6 +323,10 @@ class Magestore_Auction_Model_Event {
         return $html;
     }
 
+    /**
+     * @param $observer
+     * @return $this
+     */
     public function catalog_product_is_salable_after($observer) {
         $links = Mage::app()->getRequest()->getRouteName() .
                 Mage::app()->getRequest()->getControllerName() .
@@ -309,6 +343,9 @@ class Magestore_Auction_Model_Event {
         return $this;
     }
 
+    /**
+     * @param $observer
+     */
     public function checkout_cart_add($observer) {
         if (!Mage::registry('add_product')) {
             Mage::register('add_product', '1');
@@ -332,6 +369,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function quote_item_save_before($observer) {
         if (Mage::getSingleton('core/session')->getData('checkout_auction') == true) {
             Mage::getSingleton('core/session')->setData('checkout_auction', false);
@@ -351,6 +391,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function ajaxUpdateCartBefore($observer) {
         $action = $observer->getEvent()->getControllerAction();
         $id = (int) $action->getRequest()->getParam('id');
@@ -372,6 +415,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function updateItemOptionsCartBefore($observer) {
         $action = $observer->getEvent()->getControllerAction();
         $id = (int) $action->getRequest()->getParam('id');
@@ -391,6 +437,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function after_save_order($observer) {
         if (!Mage::registry('check_transaction')) {
             Mage::register('check_transaction', '1');
@@ -419,6 +468,9 @@ class Magestore_Auction_Model_Event {
         }
     }
 
+    /**
+     * @param $observer
+     */
     public function change_config_auction($observer) {
         $website = $observer->getEvent()->getWebsite();
         $store = $observer->getEvent()->getStore();

@@ -30,8 +30,12 @@ class Magestore_Auction_Model_Watcher extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('auction/watcher');
     }
-	
-	public function getListByCustomerId($customer_id)
+
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
+    public function getListByCustomerId($customer_id)
 	{
 		$auctionIds = array(0);
 		$watchers = $this->getCollection()

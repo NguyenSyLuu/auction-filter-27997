@@ -25,6 +25,10 @@
 
 class Magestore_Auction_Model_Rewrite_TaxConfig extends Mage_Tax_Model_Config{
 
+    /**
+     * @param null $store
+     * @return bool
+     */
     public function priceIncludesTax($store=null)
     {
 		$bid_id = Mage::getSingleton('core/session')->getData('bid_id');

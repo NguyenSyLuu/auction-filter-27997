@@ -25,12 +25,18 @@
 
 class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Productform extends Mage_Adminhtml_Block_Widget_Form
 {
-	public function __construct()
+    /**
+     * Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Productform constructor.
+     */
+    public function __construct()
 	{
 		$this->setTemplate('auction/viewproduct.phtml');
 	}
- 
-    public function getAuctionbid()     
+
+    /**
+     * @return mixed
+     */
+    public function getAuctionbid()
     { 
 		if (!$this->hasData('auction_data')) {
             $this->setData('auction_data', Mage::registry('auction_data'));
@@ -51,8 +57,12 @@ class Magestore_Auction_Block_Adminhtml_Auction_Edit_Tab_Productform extends Mag
 		
 		return;
 	}
-	
- 	public function getProductUrl($product_id)
+
+    /**
+     * @param $product_id
+     * @return mixed
+     */
+    public function getProductUrl($product_id)
 	{
 		return $this->getUrl('adminhtml/catalog_product/edit',array('id'=>$product_id));
 	}

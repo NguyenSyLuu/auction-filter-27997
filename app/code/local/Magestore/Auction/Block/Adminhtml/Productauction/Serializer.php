@@ -26,14 +26,21 @@
 class Magestore_Auction_Block_Adminhtml_Productauction_Serializer
 		extends Mage_Core_Block_Template
 {
-	public function __construct()
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Serializer constructor.
+     */
+    public function __construct()
 	{
 		parent::__construct();
 		$this->setTemplate('auction/serializer.phtml');
 		return $this;
 	}
-	
-	public function initSerializerBlock($gridName,$hiddenInputName)
+
+    /**
+     * @param $gridName
+     * @param $hiddenInputName
+     */
+    public function initSerializerBlock($gridName, $hiddenInputName)
 	{
 		$grid = $this->getLayout()->getBlock($gridName);
         $this->setGridBlock($grid)

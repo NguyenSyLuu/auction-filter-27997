@@ -28,6 +28,9 @@ class Magestore_Auction_Model_Status extends Varien_Object
     const STATUS_ENABLED	= 1;
     const STATUS_DISABLED	= 2;
 
+    /**
+     * @return array
+     */
     static public function getOptionArray()
     {
         return array(

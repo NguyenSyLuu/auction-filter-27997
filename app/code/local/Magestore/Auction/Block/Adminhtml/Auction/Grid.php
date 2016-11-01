@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Auction_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Auction_Grid constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('auctionGrid');
@@ -34,6 +37,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Grid extends Mage_Adminhtml_Bloc
         $this->setUseAjax(true);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $timezone = ((Mage::app()->getLocale()->date()->get(Zend_Date::TIMEZONE_SECS)) / 3600);
         $collection = Mage::getModel('auction/auction')->getCollection();
@@ -48,6 +54,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Grid extends Mage_Adminhtml_Bloc
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $store = $this->_getStore();
 
@@ -128,6 +137,9 @@ class Magestore_Auction_Block_Adminhtml_Auction_Grid extends Mage_Adminhtml_Bloc
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return $this
+     */
     protected function _prepareMassaction() {
         /*
           $this->setMassactionIdField('auction_id');
@@ -163,14 +175,24 @@ class Magestore_Auction_Block_Adminhtml_Auction_Grid extends Mage_Adminhtml_Bloc
         return $this;
     }
 
+    /**
+     * @param $row
+     * @return mixed
+     */
     public function getRowUrl($row) {
         return $this->getUrl('*/*/edit', array('id' => $row->getId()));
     }
 
+    /**
+     * @return mixed
+     */
     public function getGridUrl() {
         return $this->getUrl('*/*/listbid', array('id' => $this->getRequest()->getParam('id')));
     }
 
+    /**
+     * @return mixed
+     */
     protected function _getStore() {
         $storeId = (int) $this->getRequest()->getParam('store', 0);
         return Mage::app()->getStore($storeId);

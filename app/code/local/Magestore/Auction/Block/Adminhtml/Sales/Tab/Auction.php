@@ -27,35 +27,53 @@ class Magestore_Auction_Block_Adminhtml_Sales_Tab_Auction
 	extends Mage_Adminhtml_Block_Widget_Form
 	implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
-	public function __construct()
+    /**
+     * Magestore_Auction_Block_Adminhtml_Sales_Tab_Auction constructor.
+     */
+    public function __construct()
 	{
 		parent::__construct();
 		$this->setTemplate('auction/auction.phtml');
 	}
-	
-	public function getTabLabel()	{
+
+    /**
+     * @return mixed
+     */
+    public function getTabLabel()	{
 		return Mage::helper('auction')->__('AuctionBid');
 	}
 
-	public function getTabTitle() {
+    /**
+     * @return mixed
+     */
+    public function getTabTitle() {
 		return Mage::helper('sales')->__('AuctionBid');
 	}
-	
-	public function canShowTab()	{
+
+    /**
+     * @return bool
+     */
+    public function canShowTab()	{
 		if($this->getAuctionbid())	
 			return true;
 		else
 			return false;
 	}
-	
-	public function isHidden()	{
+
+    /**
+     * @return bool
+     */
+    public function isHidden()	{
 		if($this->getAuctionbid())
 			return false;
 		else
 			return true;
-	}		
-	
-	public function getAuctionbid()
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getAuctionbid()
 	{
 		if(!$this->hasData('auction'))
 		{
@@ -103,8 +121,11 @@ class Magestore_Auction_Block_Adminhtml_Sales_Tab_Auction
 		return 	$this->getData('auction');
 		
 	}
-	
-	public function getOrder()
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
     {       
         if (Mage::registry('current_order')) {
             return Mage::registry('current_order');
@@ -127,18 +148,29 @@ class Magestore_Auction_Block_Adminhtml_Sales_Tab_Auction
 		
 		return;
 	}
-  
- 	public function getProductUrl($product_id)
+
+    /**
+     * @param $product_id
+     * @return mixed
+     */
+    public function getProductUrl($product_id)
 	{
 		return $this->getUrl('adminhtml/catalog_product/edit',array('id'=>$product_id));
 	}
-	
- 	public function getCustomerUrl($customer_id)
+
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
+    public function getCustomerUrl($customer_id)
 	{
 		return $this->getUrl('adminhtml/customer/edit',array('id'=>$customer_id));
-	}	
-	
-	public function getProductauction()
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getProductauction()
 	{
 		$productauctionId = $this->getAuctionbid()->getProductauctionId();
 		
@@ -147,8 +179,11 @@ class Magestore_Auction_Block_Adminhtml_Sales_Tab_Auction
 			return Mage::getModel('auction/productauction')->load($productauctionId);
 		}
 	}
-        
-        public function getCustomer(){
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer(){
             return Mage::getModel('customer/customer')->load($this->getOrder()->getCustomerId());
         }
 

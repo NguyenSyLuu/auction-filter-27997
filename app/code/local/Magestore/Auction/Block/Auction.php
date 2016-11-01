@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
 
+    /**
+     * Magestore_Auction_Block_Auction constructor.
+     */
     public function __construct() {
         $product = $this->getProduct();
 
@@ -43,10 +46,16 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return parent::__construct();
     }
 
+    /**
+     * @return mixed
+     */
     public function _prepareLayout() {
         return parent::_prepareLayout();
     }
 
+    /**
+     * @return mixed
+     */
     public function getProduct() {
         if (!$this->hasData('product')) {
             $this->setData('product', Mage::getModel('catalog/product')->load($this->getRequest()->getParam('id')));
@@ -54,6 +63,9 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return $this->getData('product');
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuction() {
         $product = $this->getProduct();
         if (!$this->hasData('auction')) {
@@ -70,6 +82,9 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return $this->getData('auction');
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastbid() {
         $auction = $this->getAuction();
 
@@ -80,38 +95,63 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return $this->getData('lastbid');
     }
 
+    /**
+     * @return mixed
+     */
     public function getTotalBid() {
         $auction = $this->getAuction();
 
         return $auction->getTotalBid();
     }
 
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getCustomerUrl($customer_id) {
         return $this->getUrl('auction/index/customer', array('id' => $customer_id));
     }
 
+    /**
+     * @return mixed
+     */
     public function getCustomerBidUrl() {
         return $this->getUrl('auction/index/customerbid', array());
     }
 
+    /**
+     * @return mixed
+     */
     public function getBidUrl() {
         return $this->getUrl('auction/index/bid', array());
     }
 
+    /**
+     * @return mixed
+     */
     public function getHistoryUrl() {
         $auction_id = $this->getAuction()->getId();
 
         return $this->getUrl('auction/index/viewbids', array('id' => $auction_id));
     }
 
+    /**
+     * @return mixed
+     */
     public function getUpdateAuctionUrl() {
         return $this->getUrl('auction/index/updateauctioninfo', array('id' => $this->getAuction()->getId(), 'tmpl' => 'auctioninfo'));
     }
 
+    /**
+     * @return mixed
+     */
     public function getUpdatePriceUrl() {
         return $this->getUrl('auction/index/updatepricecondition', array('id' => $this->getAuction()->getId()));
     }
 
+    /**
+     * @return mixed
+     */
     public function getChangeWatcherUrl() {
         if ($this->isWatcher())
             return $this->getUrl('auction/index/changewatcher', array());
@@ -119,12 +159,18 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
             return $this->getUrl('auction/index/changewatcher', array());
     }
 
+    /**
+     * @return mixed
+     */
     public function isLoggedIn() {
         Mage::getSingleton('core/session')
                 ->setData('auction_backurl', $this->getProduct()->getProductUrl());
         return Mage::getSingleton('customer/session')->isLoggedIn();
     }
 
+    /**
+     * @return bool|void
+     */
     public function requiredBidderName() {
         $biddertype = (int) Mage::getStoreConfig('auction/general/bidder_name_type');
         if ($biddertype == 2 || $biddertype == 3) {
@@ -146,7 +192,7 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
                 return true;
             }
         } elseif ((int) Mage::getStoreConfig('auction/general/bidder_name_type') == 3) {
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            //$customer = Mage::getSingleton('customer/session')->getCustomer();
         }
         return false;
     }
@@ -181,6 +227,9 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isWatcher() {
         $customerId = Mage::getSingleton('customer/session')->getCustomerId();
         $auction = $this->getAuction();
@@ -194,6 +243,9 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
             return false;
     }
 
+    /**
+     * @return mixed
+     */
     public function getWinners() {
         if (!$this->hasData('winners')) {
             $winners = Mage::helper('auction')->getWinnerBids($this->getAuction()->getId());
@@ -202,6 +254,10 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return $this->getData('winners');
     }
 
+    /**
+     * @param $auctionId
+     * @return string
+     */
     public function getWinnerList($auctionId) {
         $listWinner = '';
         $winnerBids = $this->getWinners();
@@ -219,6 +275,9 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return $listWinner;
     }
 
+    /**
+     * @return bool
+     */
     public function isWinner() {
         if (Mage::getSingleton('customer/session')->isLoggedIn()) {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
@@ -233,22 +292,37 @@ class Magestore_Auction_Block_Auction extends Mage_Core_Block_Template {
         return false;
     }
 
+    /**
+     * @return mixed
+     */
     public function getWonMessage() {
         return Mage::getStoreConfig('auction/general/won_message', Mage::app()->getStore()->getId());
     }
 
+    /**
+     * @return mixed
+     */
     public function getWatchUrl() {
         return $this->getUrl('auction/index/changewatcher', array('product_id' => $this->getProduct()->getId(), 'is_watcher' => 1));
     }
 
+    /**
+     * @return mixed
+     */
     public function getUnWatchUrl() {
         return $this->getUrl('auction/index/changewatcher', array('product_id' => $this->getProduct()->getId(), 'is_watcher' => 2));
     }
 
+    /**
+     * @return mixed
+     */
     public function getLoginUrl() {
         return $this->getUrl('customer/account/login');
     }
 
+    /**
+     * @return mixed
+     */
     public function getCheckoutUrl() {
         $lastBid = Mage::getResourceModel('auction/auction_collection')
                 ->addFieldToFilter('productauction_id', $this->getAuction()->getId())

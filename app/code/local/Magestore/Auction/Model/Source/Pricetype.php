@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Model_Source_Pricetype
 {
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(

@@ -25,20 +25,29 @@
 
 class Magestore_Auction_Block_Productauction extends Mage_Core_Block_Template
 {
-	public function _prepareLayout()
+    /**
+     * @return mixed
+     */
+    public function _prepareLayout()
     {
 		return parent::_prepareLayout();
     }
-    
-     public function getProductauction()     
+
+    /**
+     * @return mixed
+     */
+    public function getProductauction()
      { 
         if (!$this->hasData('productauction_data')) {
             $this->setData('productauction_data', Mage::registry('productauction_data'));
         }
         return $this->getData('productauction_data');
     }
-	
-	public function getListProductBid()
+
+    /**
+     * @return mixed
+     */
+    public function getListProductBid()
 	{
         if (!$this->hasData('listBid'))
 		{
@@ -58,25 +67,37 @@ class Magestore_Auction_Block_Productauction extends Mage_Core_Block_Template
         
 		return $this->getData('listBid');		
 	}
-	
-	public function getTotalBid()
+
+    /**
+     * @return mixed
+     */
+    public function getTotalBid()
 	{
 		return $this->getProductauction()->getTotalBid();
 	}
-	
-	public function getTotalBidder()
+
+    /**
+     * @return mixed
+     */
+    public function getTotalBidder()
 	{			
 		return $this->getProductauction()->getTotalBidder();
-	}	
-	
-	public function getTimeleft()
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getTimeleft()
 	{
 		$auction = $this->getProductauction();
 		
 		return $auction->getTimeleft();	
 	}
-	
-	public function getBackUrl()
+
+    /**
+     * @return mixed
+     */
+    public function getBackUrl()
 	{
 		$auction = $this->getProductauction();
 		
@@ -85,8 +106,11 @@ class Magestore_Auction_Block_Productauction extends Mage_Core_Block_Template
 		
 		return $url;
 	}
-	
-	public function getNavHtml()
+
+    /**
+     * @return string
+     */
+    public function getNavHtml()
 	{
 		$auction_id = $this->getRequest()->getParam('id');
 		$curr_page = $this->getRequest()->getParam('page');

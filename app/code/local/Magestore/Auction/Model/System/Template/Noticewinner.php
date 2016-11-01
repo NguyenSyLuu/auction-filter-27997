@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Model_System_Template_Noticewinner
 {
+    /**
+     * @return mixed
+     */
     public function toOptionArray()
     {
         if(!$collection = Mage::registry('config_system_email_template')) {

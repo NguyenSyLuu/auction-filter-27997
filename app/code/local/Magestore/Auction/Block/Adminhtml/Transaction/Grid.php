@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Transaction_Grid constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('transactionGrid');
@@ -34,6 +37,9 @@ class Magestore_Auction_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_
         // $this->setUseAjax(true);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $collection = Mage::getModel('auction/transaction')->getCollection();
 
@@ -52,6 +58,9 @@ class Magestore_Auction_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $orderTable = Mage::getSingleton('core/resource')->getTableName('sales/order');
 
@@ -162,6 +171,10 @@ class Magestore_Auction_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_
     // return $this;
     // }
 
+    /**
+     * @param $row
+     * @return mixed
+     */
     public function getRowUrl($row) {
         return $this->getUrl('*/*/viewtransaction', array('id' => $row->getId()));
     }

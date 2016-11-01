@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit extends Mage_Adminhtml_Block_Widget_Form_Container {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit constructor.
+     */
     public function __construct() {
         parent::__construct();
 
@@ -89,6 +92,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit extends Mage_Adminht
         ";
     }
 
+    /**
+     * @return mixed
+     */
     public function getHeaderText() {
         if (Mage::registry('productauction_data') && Mage::registry('productauction_data')->getId()) {
             if (Mage::registry('productauction_data')->getStatus() == 5) {
@@ -101,6 +107,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit extends Mage_Adminht
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getProductauction() {
         if (!$this->hasData('productauction_data')) {
             $this->setData('productauction_data', Mage::registry('productauction_data'));

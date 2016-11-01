@@ -27,7 +27,15 @@ class Magestore_Auction_Block_Customer_Navigation extends Mage_Core_Block_Templa
 {
     protected $_links = array();
     protected $_activeLink = false;
-    
+
+    /**
+     * @param $name
+     * @param $path
+     * @param $label
+     * @param bool $enable
+     * @param int $order
+     * @return $this
+     */
     public function addLink($name, $path, $label, $enable = true, $order = 0)
     {
         while (isset($this->_links[$order])) {

@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Autobids extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Autobids constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('autobidsGrid');
@@ -34,10 +37,16 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Autobids extends
         $this->setSaveParametersInSession(true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getAuctionId() {
         return $this->getRequest()->getParam('id');
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $timezone = ((Mage::app()->getLocale()->date()->get(Zend_Date::TIMEZONE_SECS)) / 3600);
         $collection = Mage::getResourceModel('auction/autobid_collection')
@@ -50,6 +59,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Autobids extends
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $store = $this->_getStore();
 
@@ -91,10 +103,16 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Autobids extends
         return parent::_prepareColumns();
     }
 
+    /**
+     * @return mixed
+     */
     public function getGridUrl() {
         return $this->getData('grid_url') ? $this->getData('grid_url') : $this->getUrl('*/*/autobidlist', array('_current' => true));
     }
 
+    /**
+     * @return mixed
+     */
     protected function _getStore() {
         $storeId = (int) $this->getRequest()->getParam('store', 0);
         return Mage::app()->getStore($storeId);

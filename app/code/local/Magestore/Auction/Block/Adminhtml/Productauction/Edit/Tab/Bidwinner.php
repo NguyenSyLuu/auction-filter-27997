@@ -25,6 +25,9 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Bidwinner extends Mage_Adminhtml_Block_Widget_Grid {
 
+    /**
+     * Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Bidwinner constructor.
+     */
     public function __construct() {
         parent::__construct();
         $this->setId('winnerbidGrid');
@@ -34,6 +37,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Bidwinner extend
         $this->setSaveParametersInSession(true);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareCollection() {
         $timezone = ((Mage::app()->getLocale()->date()->get(Zend_Date::TIMEZONE_SECS)) / 3600);
         $collection = Mage::getModel('auction/auction')->getCollection()
@@ -48,6 +54,9 @@ class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Tab_Bidwinner extend
         return parent::_prepareCollection();
     }
 
+    /**
+     * @return mixed
+     */
     protected function _prepareColumns() {
         $this->addColumn('auctionbid_id', array(
             'header' => Mage::helper('auction')->__('ID'),

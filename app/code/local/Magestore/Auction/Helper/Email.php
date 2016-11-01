@@ -28,6 +28,9 @@ class Magestore_Auction_Helper_Email extends Mage_Core_Helper_Abstract {
     const XML_PATH_SALES_EMAIL_IDENTITY = "trans_email/ident_sales";
     const XML_PATH_NOTICE_FAILDER = "auction/emails/notice_failder_email_template";
 
+    /**
+     * @param $auction
+     */
     public function sendAuctionCompleteEmail($auction) {
         $winnerBids = $auction->getWinnerBids();
         if (count($winnerBids))
@@ -39,6 +42,10 @@ class Magestore_Auction_Helper_Email extends Mage_Core_Helper_Abstract {
         $this->noticeOutBid($auction);
     }
 
+    /**
+     * @param $auction
+     * @return $this
+     */
     public function noticeOutBid($auction) {
         if (!Mage::registry('notice_outbid')) {
             Mage::register('notice_outbid', '1');

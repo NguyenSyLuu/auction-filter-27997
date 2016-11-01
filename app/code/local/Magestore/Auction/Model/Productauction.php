@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magestore
  *
@@ -22,24 +23,30 @@
  * @license     http://www.magestore.com/license-agreement.html
  *
  */
-
-class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
+class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract
+{
 
     const XML_PATH_SALES_EMAIL_IDENTITY = "trans_email/ident_sales";
     const XML_PATH_ADMIN_EMAIL_IDENTITY = "trans_email/ident_general";
     const XML_PATH_NOTICE_AUCTION_COMPLETED = "auction/emails/notice_auction_completed";
     const XML_PATH_NOTICE_AUCTION_COMPLETED_TO_WATCHER = "auction/emails/notice_auction_completed_towatcher";
 
-    public function _construct() {
+    public function _construct()
+    {
         parent::_construct();
         $this->_init('auction/productauction');
     }
 
-    public function loadAuctionByProductId($product_id) {
+    /**
+     * @param $product_id
+     * @return null
+     */
+    public function loadAuctionByProductId($product_id)
+    {
         $collection = $this->getCollection()
-                ->addFieldToFilter('product_id', $product_id)
-                ->addFieldToFilter('status', array('nin' => array(2, 3, 6)))
-                ->setOrder('productauction_id', 'DESC');
+            ->addFieldToFilter('product_id', $product_id)
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 6)))
+            ->setOrder('productauction_id', 'DESC');
 
         if (!count($collection))
             return null;
@@ -53,7 +60,11 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return null;
     }
 
-    public function getLastBid() {
+    /**
+     * @return mixed
+     */
+    public function getLastBid()
+    {
         if (!$this->getData('last_bid')) {
             $last_bid = Mage::getModel('auction/auction')->getLastAuctionBid($this->getId());
             $this->setData('last_bid', $last_bid);
@@ -61,40 +72,64 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return $this->getData('last_bid');
     }
 
-    public function getLastautobid() {
+    /**
+     * @return mixed
+     */
+    public function getLastautobid()
+    {
         $lastautobid = Mage::getModel('auction/lastautobid')->getCollection()
-                ->addFieldToFilter('productauction_id', $this->getId())
-                ->setOrder('last_run_autobid_id', 'DESC')
-                ->getFirstItem();
+            ->addFieldToFilter('productauction_id', $this->getId())
+            ->setOrder('last_run_autobid_id', 'DESC')
+            ->getFirstItem();
 
 
         return $lastautobid;
     }
 
-    public function getCurrentPrice() {
+    /**
+     * @return mixed
+     */
+    public function getCurrentPrice()
+    {
         $lastBid = $this->getLastBid();
         $current_price = $lastBid->getPrice() ? $lastBid->getPrice() : $this->getInitPrice();
 
         return $current_price;
     }
 
-    public function getListBid() {
+    /**
+     * @return mixed
+     */
+    public function getListBid()
+    {
         return Mage::getModel('auction/auction')->getCollection()
-                        ->addFieldToFilter('productauction_id', $this->getId())
-                        //->addFieldToFilter('status',array('nin'=>2))
-                        ->setOrder('auctionbid_id', 'DESC');
+            ->addFieldToFilter('productauction_id', $this->getId())
+            //->addFieldToFilter('status',array('nin'=>2))
+            ->setOrder('auctionbid_id', 'DESC');
     }
 
-    public function getTotalBid() {
+    /**
+     * @return mixed
+     */
+    public function getTotalBid()
+    {
         $collection = $this->getListBid();
         return $collection->getSize();
     }
 
-    public function getTotalBidder() {
+    /**
+     * @return mixed
+     */
+    public function getTotalBidder()
+    {
         return Mage::getResourceModel('auction/auction')->getTotalBidder($this->getId());
     }
 
-    public function getTimeLeft() {
+    /**
+     * @return string
+     */
+    public function getTimeLeft()
+    {
         $endtime = strtotime($this->getEndTime() . ' ' . $this->getEndDate());
 
         $timestamp = Mage::getModel('core/date')->timestamp(time());
@@ -111,22 +146,34 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return $days . ' days ' . date('H', $time) . ' hours ' . date('i', $time) . ' minutes';
     }
 
-    public function getMinNextPrice() {
+    /**
+     * @return mixed
+     */
+    public function getMinNextPrice()
+    {
         $currentPrice = $this->getCurrentPrice();
         $min_next_price = $currentPrice + $this->getMinIntervalPrice();
         return $min_next_price;
     }
 
-    public function getMaxNextPrice() {
+    /**
+     * @return int
+     */
+    public function getMaxNextPrice()
+    {
         $currentPrice = $this->getCurrentPrice();
         $max_interval_price = $this->getMaxIntervalPrice();
-        $max_interval_price = ($max_interval_price > 0 ) ? $max_interval_price : 0;
+        $max_interval_price = ($max_interval_price > 0) ? $max_interval_price : 0;
         $max_next_price = $max_interval_price ? ($currentPrice + $max_interval_price) : 0;
 
         return $max_next_price;
     }
 
-    public function loadByStore() {
+    /**
+     * @return $this
+     */
+    public function loadByStore()
+    {
         $storeId = $this->getStoreId();
         $this->load($this->getId());
         if ($storeId) {
@@ -137,25 +184,47 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return $this;
     }
 
-    public function getFormatedEndTime($type = 'medium') {
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getFormatedEndTime($type = 'medium')
+    {
         $end_time = new Zend_Date($this->getEndDate() . ' ' . $this->getEndTime(), null, 'en_GB');
         return Mage::helper('core')->formatDate($end_time, $type, true);
     }
 
-    public function getFormatedStartTime($type = 'medium') {
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getFormatedStartTime($type = 'medium')
+    {
         $start_time = new Zend_Date($this->getStartDate() . ' ' . $this->getStartTime(), null, 'en_GB');
         return Mage::helper('core')->formatDate($start_time, $type, true);
     }
 
-    public function getFormatedStartPrice() {
+    /**
+     * @return mixed
+     */
+    public function getFormatedStartPrice()
+    {
         return Mage::helper('core')->currency($this->getInitPrice());
     }
 
-    public function getFormatedClosePrice() {
+    /**
+     * @return mixed
+     */
+    public function getFormatedClosePrice()
+    {
         return Mage::helper('core')->currency($this->getLastBid()->getPrice());
     }
 
-    public function getWinnerBids() {
+    /**
+     * @return mixed
+     */
+    public function getWinnerBids()
+    {
         if (!$this->getData('winnerbids')) {
             $winnerBids = Mage::helper('auction')->getWinnerBids($this->getId());
             $this->setData('winnerbids', $winnerBids);
@@ -164,7 +233,11 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return $this->getData('winnerbids');
     }
 
-    public function getWinnerEmailList() {
+    /**
+     * @return string
+     */
+    public function getWinnerEmailList()
+    {
         $emailList = '';
         $winnerBids = Mage::helper('auction')->getWinnerBids($this->getId());
         if (count($winnerBids)) {
@@ -175,13 +248,17 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
                 if ($i != count($winnerBids))
                     $emailList .= ', ';
             }
-        }else {
+        } else {
             $emailList = 'No winner';
         }
         return $emailList;
     }
 
-    public function emailNoticeCompleted() {
+    /**
+     * @return $this
+     */
+    public function emailNoticeCompleted()
+    {
         if (!Mage::registry('notice_winner')) {
             Mage::register('notice_winner', '1');
             if (Mage::getStoreConfig(self::XML_PATH_NOTICE_AUCTION_COMPLETED) != '0') {
@@ -203,11 +280,11 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
 
                 foreach ($sendTo as $recipient) {
                     $mailTemplate->setDesignConfig(array('area' => 'frontend', 'store' => $storeID))
-                            ->sendTransactional(
-                                    $template, Mage::getStoreConfig(self::XML_PATH_SALES_EMAIL_IDENTITY, $storeID), $recipient['email'], $recipient['name'], array(
+                        ->sendTransactional(
+                            $template, Mage::getStoreConfig(self::XML_PATH_SALES_EMAIL_IDENTITY, $storeID), $recipient['email'], $recipient['name'], array(
                                 'auction' => $this->setAdminName($recipient['name'])
-                                    )
-                    );
+                            )
+                        );
                 }
 
                 $translate->setTranslateInline(true);
@@ -217,7 +294,11 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         }
     }
 
-    public function emailNoticeCompletedToWatcher() {
+    /**
+     * @return $this
+     */
+    public function emailNoticeCompletedToWatcher()
+    {
         if (!Mage::registry('notice_complete_to_watcher')) {
             Mage::register('notice_complete_to_watcher', '1');
             $storeID = $this->getStoreId();
@@ -228,7 +309,7 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
             $translate->setTranslateInline(false);
 
             $bids = Mage::getModel('auction/auction')->getCollection()
-                    ->addFieldToFilter('productauction_id', $this->getId());
+                ->addFieldToFilter('productauction_id', $this->getId());
             $customerIds = array();
             foreach ($bids as $bid) {
                 $storeID = $bid->getStoreId();
@@ -236,9 +317,9 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
             }
 
             $watchers = Mage::getModel('auction/watcher')->getCollection()
-                    ->addFieldToFilter('productauction_id', $this->getProductauctionId())
-                    ->addFieldToFilter('status', 1)
-                    ->addFieldToFilter('customer_id', array('nin' => $customerIds));
+                ->addFieldToFilter('productauction_id', $this->getProductauctionId())
+                ->addFieldToFilter('status', 1)
+                ->addFieldToFilter('customer_id', array('nin' => $customerIds));
 
             if (!count($watchers))
                 return $this;
@@ -258,11 +339,11 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
             if (count($sendTo)) {
                 foreach ($sendTo as $recipient) {
                     $mailTemplate->setDesignConfig(array('area' => 'frontend', 'store' => $storeID))
-                            ->sendTransactional(
-                                    $template, Mage::getStoreConfig(self::XML_PATH_SALES_EMAIL_IDENTITY, $storeID), $recipient['email'], $recipient['name'], array(
+                        ->sendTransactional(
+                            $template, Mage::getStoreConfig(self::XML_PATH_SALES_EMAIL_IDENTITY, $storeID), $recipient['email'], $recipient['name'], array(
                                 'auction' => $this->setCustomerName($recipient['name'])
-                                    )
-                    );
+                            )
+                        );
                 }
             }
             $translate->setTranslateInline(true);
@@ -271,20 +352,28 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         }
     }
 
-    public function getMultiWinnerBid() {
+    /**
+     * @return mixed
+     */
+    public function getMultiWinnerBid()
+    {
 
         if (!$this->getData('multiwinnerbid')) {
-            $multiwinnerbid = Mage::helper('auction')->getMultiWinnerBid($this->getId());
+//            $multiwinnerbid = Mage::helper('auction')->getMultiWinnerBid($this->getId());
             $this->setData('multiwinnerbid', $winnerbid);
         }
 
         return $this->getData('multiwinnerbid');
     }
 
-    public function getAuctionUrl() {
+    /**
+     * @return mixed
+     */
+    public function getAuctionUrl()
+    {
         $idPath = 'product/' . $this->getProductId();
         $rewrite = Mage::getModel('core/url_rewrite')
-                ->setStoreId($this->getStoreId());
+            ->setStoreId($this->getStoreId());
         $rewrite->loadByIdPath($idPath);
         if ($rewrite->getId()) {
             $url = Mage::getModel('core/url')->getDirectUrl($rewrite->getRequestPath());
@@ -294,22 +383,27 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return $url;
     }
 
-    public function import($data) {
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function import($data)
+    {
         $this->setData($data);
         if (!$this->getProductSku())
             return false;
         $product = Mage::getModel('catalog/product')
-                ->getCollection()
-                ->addAttributeToSelect('name')
-                ->addFieldToFilter('sku', trim($this->getProductSku()))
-                ->getFirstItem();
+            ->getCollection()
+            ->addAttributeToSelect('name')
+            ->addFieldToFilter('sku', trim($this->getProductSku()))
+            ->getFirstItem();
 
         if (!$product->getId())
             return false;
         $auction = $this->getCollection()
-                ->addFieldToFilter('product_id', $product->getId())
-                ->addFieldToFilter('status', array('in' => array(2, 4)))
-                ->getFirstItem();
+            ->addFieldToFilter('product_id', $product->getId())
+            ->addFieldToFilter('status', array('in' => array(2, 4)))
+            ->getFirstItem();
         if ($auction->getId())
             return false;
 
@@ -317,11 +411,10 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         $now = date('Y-m-d H:i:s', $timestamp);
 
         $this->setProductId($product->getId())
-                ->setProductName($product->getName())
-                ->setIsApply(1)
-                ->setCreatedTime($now)
-                ->setUpdateTime($now)
-        ;
+            ->setProductName($product->getName())
+            ->setIsApply(1)
+            ->setCreatedTime($now)
+            ->setUpdateTime($now);
 
         $this->convetStartTime();
         $this->convetEndTime();
@@ -334,10 +427,10 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
             $valueModel->loadByAuctionStore($this->getId(), $store->getId());
             $valueId = $valueModel->getId();
             $valueModel->setData($this->getData())
-                    ->setId($valueId)
-                    ->setStoreId($store->getId())
-                    ->setIsApplied(1)
-                    ->save();
+                ->setId($valueId)
+                ->setStoreId($store->getId())
+                ->setIsApplied(1)
+                ->save();
 
             $valueModel->setData(null);
         }
@@ -345,25 +438,32 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return true;
     }
 
-    public function convetStartTime() {
+    public function convetStartTime()
+    {
         if (!$this->getStartTime())
             return;
 
         $times = $this->convertTime($this->getStartTime());
         $this->setStartTime($times['time'])
-                ->setStartDate($times['date']);
+            ->setStartDate($times['date']);
     }
 
-    public function convetEndTime() {
+    public function convetEndTime()
+    {
         if (!$this->getEndTime())
             return;
 
         $times = $this->convertTime($this->getEndTime());
         $this->setEndTime($times['time'])
-                ->setEndDate($times['date']);
+            ->setEndDate($times['date']);
     }
 
-    public function convertTime($time_str) {
+    /**
+     * @param $time_str
+     * @return array
+     */
+    public function convertTime($time_str)
+    {
         $times = explode(' ', $time_str);
         $rtime = null;
         $rdate = null;
@@ -381,7 +481,8 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return array('date' => $rdate, 'time' => $rtime);
     }
 
-    public function convertStatus() {
+    public function convertStatus()
+    {
         if (!$this->getStatus())
             return;
         if (strtolower(trim($this->getStatus())) == 'enabled')
@@ -391,12 +492,17 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return;
     }
 
-    public function checkAuctionBuyoutByProductId($product_id) {
+    /**
+     * @param $product_id
+     * @return bool
+     */
+    public function checkAuctionBuyoutByProductId($product_id)
+    {
         $auction = $this->getCollection()
-                ->addFieldToFilter('product_id', $product_id)
-                ->addFieldToFilter('status', array('in' => array(4, 5)))
-                ->setOrder('productauction_id', 'DESC')
-                ->getFirstItem();
+            ->addFieldToFilter('product_id', $product_id)
+            ->addFieldToFilter('status', array('in' => array(4, 5)))
+            ->setOrder('productauction_id', 'DESC')
+            ->getFirstItem();
         if ($auction->getId()) {
             if ($auction->getStatus() == 4 && $auction->getAllowBuyout() == 2) {
                 return true;

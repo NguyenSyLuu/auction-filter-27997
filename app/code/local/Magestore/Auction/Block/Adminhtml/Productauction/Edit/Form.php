@@ -25,7 +25,10 @@
 
 class Magestore_Auction_Block_Adminhtml_Productauction_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
-  protected function _prepareForm()
+    /**
+     * @return mixed
+     */
+    protected function _prepareForm()
   {
       $form = new Varien_Data_Form(array(
                                       'id' => 'edit_form',
