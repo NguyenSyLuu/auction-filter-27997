@@ -4,8 +4,27 @@
         var auctionTimeCounters = new Array();
         var i = 0;
     //]]>
-    </script>	
+    </script>
+    <div class="sort-by">
+        <label>Sort By</label>
+        <select onchange="setLocation(this.value)" title="Sort By">
+            <option value="http://localhost/magento12/auction/index/index" selected="selected">
+                Position                        </option>
+            <option value="http://localhost/magento12/auction/sort/lowtohigh">
+                Low To High                        </option>
+            <option value="http://localhost/magento12/auction/sort/hightolow">
+                High To Low                        </option>
+            <option value="http://localhost/magento12/auction/sort/endingsoon">
+                Ending Soonest                        </option>
+            <option value="http://localhost/magento12/auction/sort/newauction">
+                New Auction                        </option>
+            <option value="http://localhost/magento12/auction/sort/hotauction">
+                Hot Auctions                       </option>
+        </select>
+    </div>
+
     <?php $_productCollection = $this->getLoadedProductCollection() ?>
+    <?php //Zend_Debug::dump($_productCollection->getData());die(); ?>
     <?php if (!$_productCollection->count()): ?>
         <div class="note-msg">
             <?php echo $this->__('There are no available products for auctioning at this time.') ?>

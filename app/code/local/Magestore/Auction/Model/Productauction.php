@@ -30,6 +30,57 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         return null;
     }
 
+//    start customize 27997
+    public function loadAuctionLowToHigh() {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)))
+            ->setOrder('init_price', 'ASC');
+
+        if (!count($collection))
+            return null;
+
+        return $collection;
+    }
+
+    public function loadAuctionHighToLow() {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)))
+            ->setOrder('init_price', 'DESC');
+
+        if (!count($collection))
+            return null;
+
+        return $collection;
+    }
+
+    public function loadAuctionEndingSoon() {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)))
+            ->setOrder('end_date', 'ASC')
+            ->setOrder('end_time', 'ASC');
+
+        if (!count($collection))
+            return null;
+
+        return $collection;
+    }
+
+    public function loadHotAuction() {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)))
+            ->setOrder('productauction_id', 'DESC');
+
+        if (!count($collection))
+            return null;
+
+        foreach ($collection as $key=>$item) {
+            if(!(Mage::helper('auction')->isHotAuction($item))){
+                $collection->removeDataByKey($key);
+            }
+        }
+        return $collection;
+    }
+//end customize 27997
     public function getLastBid() {
         if (!$this->getData('last_bid')) {
             $last_bid = Mage::getModel('auction/auction')->getLastAuctionBid($this->getId());

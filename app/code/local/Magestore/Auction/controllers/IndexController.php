@@ -2,6 +2,11 @@
 
 class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
 
+    public function testAction(){
+        $auction = Mage::getModel('auction/productauction')->load(7);
+        Zend_Debug::dump(Mage::helper('auction')->isHotAuction($auction));
+    }
+
     public function indexAction() {
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
             $this->_redirect('', array());

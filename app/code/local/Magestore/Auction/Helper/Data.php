@@ -2,6 +2,16 @@
 
 class Magestore_Auction_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    public function isHotAuction($auction){
+        $bidCollection = Mage::getModel('auction/auction')->getCollection()
+            ->addFieldToFilter('productauction_id', $auction->getId());
+        if($bidCollection->count() >= 3){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function getAuctionUrl() {
         $url = $this->_getUrl("auction/index", array());
 

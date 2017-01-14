@@ -51,7 +51,73 @@
             </action>
         </reference>	
     </customer_account>
-    
+
+    <!--start customize 27997-->
+    <auction_sort_lowtohigh>
+        <reference name="head">
+            <block type="auction/auction" name="auction.toplink" >
+                <action method="addAuctionJs" />
+                <action method="addAuctionCss" />
+            </block>
+        </reference>
+        <update handle="catalog_category_view" />
+        <update handle="catalog_category_layered" />
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>auction/gridlowtohigh.phtml</template>
+            </action>
+        </reference>
+    </auction_sort_lowtohigh>
+
+    <auction_sort_hightolow>
+        <reference name="head">
+            <block type="auction/auction" name="auction.toplink" >
+                <action method="addAuctionJs" />
+                <action method="addAuctionCss" />
+            </block>
+        </reference>
+        <update handle="catalog_category_view" />
+        <update handle="catalog_category_layered" />
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>auction/gridhightolow.phtml</template>
+            </action>
+        </reference>
+    </auction_sort_hightolow>
+
+    <auction_sort_endingsoon>
+        <reference name="head">
+            <block type="auction/auction" name="auction.toplink" >
+                <action method="addAuctionJs" />
+                <action method="addAuctionCss" />
+            </block>
+        </reference>
+        <update handle="catalog_category_view" />
+        <update handle="catalog_category_layered" />
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>auction/gridendingsoon.phtml</template>
+            </action>
+        </reference>
+    </auction_sort_endingsoon>
+
+    <auction_sort_hotauction>
+        <reference name="head">
+            <block type="auction/auction" name="auction.toplink" >
+                <action method="addAuctionJs" />
+                <action method="addAuctionCss" />
+            </block>
+        </reference>
+        <update handle="catalog_category_view" />
+        <update handle="catalog_category_layered" />
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>auction/gridhotauction.phtml</template>
+            </action>
+        </reference>
+    </auction_sort_hotauction>
+    <!--end customize 27997-->
+
     <auction_index_customerbid>	
         <reference name="head">
             <block type="auction/auction" name="auction.toplink" >
