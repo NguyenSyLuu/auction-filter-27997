@@ -116,6 +116,22 @@
             </action>
         </reference>
     </auction_sort_hotauction>
+
+    <auction_sort_newauction>
+        <reference name="head">
+            <block type="auction/auction" name="auction.toplink" >
+                <action method="addAuctionJs" />
+                <action method="addAuctionCss" />
+            </block>
+        </reference>
+        <update handle="catalog_category_view" />
+        <update handle="catalog_category_layered" />
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>auction/gridnewauction.phtml</template>
+            </action>
+        </reference>
+    </auction_sort_newauction>
     <!--end customize 27997-->
 
     <auction_index_customerbid>	

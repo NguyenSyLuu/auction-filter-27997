@@ -70,15 +70,40 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
             ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)))
             ->setOrder('productauction_id', 'DESC');
 
+
         if (!count($collection))
             return null;
-
+        $resultCollection = array();
         foreach ($collection as $key=>$item) {
-            if(!(Mage::helper('auction')->isHotAuction($item))){
-                $collection->removeDataByKey($key);
+            if((Mage::helper('auction')->isHotAuction($item))){
+                array_push($resultCollection, $item->getId());
+            }
+//            $resultCollection->setData($item->getData());
+//
+        }
+        return $this->getCollection()
+            ->addFieldToFilter('productauction_id', array('in' => $resultCollection))
+            ->setOrder('productauction_id', 'DESC');
+    }
+
+    public function loadNewAuction() {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('status', array('nin' => array(2, 3, 5, 6)));
+        if (!count($collection))
+            return null;
+        $resultCollection = array();
+        foreach ($collection as $item) {
+            $updateTime = strtotime($item->getUpdateTime());
+            $nowTime = time();
+            $newTimeConfig = 2*24*60*60;
+
+            if(($nowTime-$updateTime) <= $newTimeConfig){
+                array_push($resultCollection, $item->getId());
             }
         }
-        return $collection;
+        return $this->getCollection()
+            ->addFieldToFilter('productauction_id', array('in' => $resultCollection))
+            ->setOrder('productauction_id', 'DESC');
     }
 //end customize 27997
     public function getLastBid() {

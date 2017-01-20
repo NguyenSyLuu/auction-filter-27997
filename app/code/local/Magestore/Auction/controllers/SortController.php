@@ -90,6 +90,27 @@ class Magestore_Auction_SortController extends Mage_Core_Controller_Front_Action
         $this->renderLayout();
     }
 
+    public function newauctionAction(){
+
+        if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
+            $this->_redirect('', array());
+            return;
+        }
+        if (!Mage::registry('current_category')) {
+            $category = Mage::getModel('catalog/category')->load(Mage::app()->getStore()->getRootCategoryId())
+                ->setIsAnchor(1)
+                ->setName(Mage::helper('core')->__('Auction'))
+                ->setDisplayMode('PRODUCTS');
+            Mage::register('current_category', $category);
+        }
+        Mage::helper('auction')->updateAuctionStatus();
+        $this->loadLayout();
+        $this->getLayout()
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('New Auctions'));
+        $this->renderLayout();
+    }
+
     protected function _getAuctionInfo($auction, $lastBid = null, $tmpl = null) {
         $lastBid = $lastBid ? $lastBid : $auction->getLastBid();
         $tmpl = $tmpl ? $tmpl : 'auctioninfo';

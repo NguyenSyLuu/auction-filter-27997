@@ -4,8 +4,13 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
 
     public function testAction(){
         $auction = Mage::getModel('auction/productauction')->load(7);
-        Zend_Debug::dump(Mage::helper('auction')->isHotAuction($auction));
+//        Zend_Debug::dump(Mage::helper('auction')->isHotAuction($auction->getProductName()));
+        $result = strtotime($auction->getUpdateTime());
+        $now = time();
+        Zend_Debug::dump($result);
+        Zend_Debug::dump($now);
     }
+
 
     public function indexAction() {
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {

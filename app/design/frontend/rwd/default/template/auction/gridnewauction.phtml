@@ -5,7 +5,7 @@
         var i = 0;
         //]]>
     </script>
-    <div class="sort-by">
+    <div class="sort-by" style="float: right">
         <label>Sort By</label>
         <select onchange="setLocation(this.value)" title="Sort By">
             <option value="http://localhost/magento12/auction/index/index">
@@ -16,13 +16,13 @@
                 High To Low                        </option>
             <option value="http://localhost/magento12/auction/sort/endingsoon">
                 Ending Soonest                        </option>
-            <option value="http://localhost/magento12/auction/sort/newauction">
+            <option value="http://localhost/magento12/auction/sort/newauction" selected="selected">
                 New Auction                        </option>
-            <option value="http://localhost/magento12/auction/sort/hotauction" selected="selected">
+            <option value="http://localhost/magento12/auction/sort/hotauction" >
                 Hot Auctions                       </option>
         </select>
     </div>
-    <?php $modelAuction = Mage::getModel('auction/productauction'); $auctions = $modelAuction->loadHotAuction();  ?>
+    <?php $modelAuction = Mage::getModel('auction/productauction'); $auctions = $modelAuction->loadNewAuction();  ?>
     <?php //Zend_Debug::dump($auctions); die();?>
     <?php if (!$auctions): ?>
         <div class="note-msg">
@@ -65,7 +65,6 @@
                                 echo $this->getPriceHtml($_product, true)
                             ?>
                             <div class="timeleft" id="timeleft_<?php echo $_product->getId() ?>"> </div>
-                            <div style="width: 122px; height: 25px; border: 2px solid red; "><strong><?php echo $this->__('Hot Auction') ?></strong></div>
                             <div id="auction_info_<?php echo $_product->getId() ?>">
                                 <div class="row"> <center>
                                         <span class="current_price" id="current_price<?php echo $_product->getId() ?>">
