@@ -95,7 +95,8 @@ class Magestore_Auction_Model_Productauction extends Mage_Core_Model_Abstract {
         foreach ($collection as $item) {
             $updateTime = strtotime($item->getUpdateTime());
             $nowTime = time();
-            $newTimeConfig = 2*24*60*60;
+            $timeConfig = Mage::getStoreConfig('auction/general/new_auction_time');
+            $newTimeConfig = $timeConfig*24*60*60;
 
             if(($nowTime-$updateTime) <= $newTimeConfig){
                 array_push($resultCollection, $item->getId());

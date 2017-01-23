@@ -112,6 +112,17 @@
                 </Magestore_Auction>
             </modules>
         </translate>
+        <!--start customize-->
+        <routers>
+            <tag>
+                <args>
+                    <modules>
+                        <inchoo_tag before="Mage_Tag">Inchoo_Tag</inchoo_tag>
+                    </modules>
+                </args>
+            </tag>
+        </routers>
+        <!--end customize-->
     </frontend>	
         <admin>
         <routers>
@@ -312,6 +323,15 @@
                     </magestore_auction_observer>
                 </observers>				
             </catalog_product_save_after>
+            <customize_event_view_cart>
+                <observers>
+                    <magestore_auction_observer>
+                        <type>singleton</type>
+                        <class>auction/event</class>
+                        <method>customize_event_view_cart</method>
+                    </magestore_auction_observer>
+                </observers>
+            </customize_event_view_cart>
         </events>		
     </global>
     <default>

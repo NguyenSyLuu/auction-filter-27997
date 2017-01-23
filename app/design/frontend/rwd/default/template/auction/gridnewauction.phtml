@@ -5,7 +5,7 @@
         var i = 0;
         //]]>
     </script>
-    <div class="sort-by" style="float: right">
+    <div class="sort-by">
         <label>Sort By</label>
         <select onchange="setLocation(this.value)" title="Sort By">
             <option value="http://localhost/magento12/auction/index/index">
@@ -23,8 +23,8 @@
         </select>
     </div>
     <?php $modelAuction = Mage::getModel('auction/productauction'); $auctions = $modelAuction->loadNewAuction();  ?>
-    <?php //Zend_Debug::dump($auctions); die();?>
-    <?php if (!$auctions): ?>
+    <?php //Zend_Debug::dump($auctions->count()); die();?>
+    <?php if (!$auctions->count()): ?>
         <div class="note-msg">
             <?php echo $this->__('There are no available products for auctioning at this time.') ?>
         </div>

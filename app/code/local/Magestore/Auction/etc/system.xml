@@ -53,6 +53,15 @@
                             <show_in_store>1</show_in_store>
                             <comment>Show actual products price on auction listing page.</comment>
                         </show_price>
+                        <new_auction_time>
+                            <label>Time new auction</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>day(s). Use for filter auction</comment>
+                        </new_auction_time>
                         <won_message translate="label">
                             <label>Winning Message</label>
                             <frontend_type>textarea</frontend_type>

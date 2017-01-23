@@ -2,6 +2,20 @@
 
 class Magestore_Auction_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    public function haveAuctionItem(){
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $items = $quote->getAllItems();
+        $check = 0;
+        foreach ($items as $item) {
+            $bidId = $item->getOptionByCode('bid_id');
+            if($bidId) {
+                $quote->setCouponCode('');
+                $quote->collectTotals()->save();
+                return false;
+            }
+        }
+        return true;
+    }
     public function isHotAuction($auction){
         $bidCollection = Mage::getModel('auction/auction')->getCollection()
             ->addFieldToFilter('productauction_id', $auction->getId());
