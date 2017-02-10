@@ -2,6 +2,19 @@
 
 class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
 
+    public function testAction() {
+        $couponCode = Mage::getSingleton('checkout/session')
+            ->getQuote()
+            ->getCouponCode();
+        $quote2 = Mage::getSingleton('checkout/session')->getQuote();
+        $discountTotal = 0;
+        foreach ($quote2->getAllItems() as $item){
+            $discountTotal += $item->getDiscountAmount();
+        }
+        Zend_Debug::dump($couponCode);
+        Zend_Debug::dump($discountTotal);
+    }
+
     public function indexAction() {
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
             $this->_redirect('', array());

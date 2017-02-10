@@ -9,7 +9,7 @@ class Magestore_Auction_Helper_Data extends Mage_Core_Helper_Abstract {
         foreach ($items as $item) {
             $bidId = $item->getOptionByCode('bid_id');
             if($bidId) {
-                $quote->setCouponCode('');
+                $quote->setCouponCode(NULL);
                 $quote->collectTotals()->save();
                 return false;
             }

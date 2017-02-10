@@ -8,17 +8,17 @@
     <div class="sort-by">
         <label>Sort By</label>
         <select onchange="setLocation(this.value)" title="Sort By">
-            <option value="http://localhost/magento12/auction/index/index">
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/index/index">
                 Position                        </option>
-            <option value="http://localhost/magento12/auction/sort/lowtohigh" >
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/sort/lowtohigh" >
                 Low To High                        </option>
-            <option value="http://localhost/magento12/auction/sort/hightolow">
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/sort/hightolow">
                 High To Low                        </option>
-            <option value="http://localhost/magento12/auction/sort/endingsoon">
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/sort/endingsoon">
                 Ending Soonest                        </option>
-            <option value="http://localhost/magento12/auction/sort/newauction">
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/sort/newauction">
                 New Auction                        </option>
-            <option value="http://localhost/magento12/auction/sort/hotauction" selected="selected">
+            <option value="<?php echo Mage::getBaseUrl(); ?>auction/sort/hotauction" selected="selected">
                 Hot Auctions                       </option>
         </select>
     </div>
